@@ -2,7 +2,7 @@
 
 namespace spanish_verbs.Models
 {
-    public class spanish_verbs
+    public class SpanishVerb
     {
     }
 }
