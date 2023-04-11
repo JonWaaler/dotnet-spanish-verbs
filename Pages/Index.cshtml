@@ -7,3 +7,32 @@
 <div class="text-center">
     <h1 class="display-4">Learn Spanish</h1>
 </div>
+<h1>100 Verbs Test:</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Words[0].ToEnglish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Words[0].ToSpanish)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Words)
+        {
+                <tr>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.ToEnglish)
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.ToSpanish)
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
