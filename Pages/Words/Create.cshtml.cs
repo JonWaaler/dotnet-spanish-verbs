@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using spanish_verbs.Data;
 using spanish_verbs.Models;
 
-namespace spanish_verbs.Pages._100verbs
+namespace spanish_verbs.Pages.Words
 {
     public class CreateModel : PageModel
     {

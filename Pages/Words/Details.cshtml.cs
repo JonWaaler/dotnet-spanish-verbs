@@ -8,19 +8,18 @@ using Microsoft.EntityFrameworkCore;
 using spanish_verbs.Data;
 using spanish_verbs.Models;
 
-namespace spanish_verbs.Pages._100verbs
+namespace spanish_verbs.Pages.Words
 {
-    public class DeleteModel : PageModel
+    public class DetailsModel : PageModel
     {
         private readonly spanish_verbs.Data.ApplicationDbContext _context;
 
-        public DeleteModel(spanish_verbs.Data.ApplicationDbContext context)
+        public DetailsModel(spanish_verbs.Data.ApplicationDbContext context)
         {
             _context = context;
         }
 
-        [BindProperty]
-      public Word Word { get; set; } = default!;
+      public Word Word { get; set; } = default!; 
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,7 +29,6 @@ namespace spanish_verbs.Pages._100verbs
             }
 
             var word = await _context.Words.FirstOrDefaultAsync(m => m.Id == id);
-
             if (word == null)
             {
                 return NotFound();
@@ -40,24 +38,6 @@ namespace spanish_verbs.Pages._100verbs
                 Word = word;
             }
             return Page();
-        }
-
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            if (id == null || _context.Words == null)
-            {
-                return NotFound();
-            }
-            var word = await _context.Words.FindAsync(id);
-
-            if (word != null)
-            {
-                Word = word;
-                _context.Words.Remove(Word);
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToPage("./Index");
         }
     }
 }

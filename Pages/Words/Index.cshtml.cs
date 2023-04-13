@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using spanish_verbs.Data;
 using spanish_verbs.Models;
 
-namespace spanish_verbs.Pages._100verbs
+namespace spanish_verbs.Pages.Words
 {
     public class IndexModel : PageModel
     {

@@ -1,40 +1,40 @@
 ﻿@page
-@model spanish_verbs.Pages._100verbs.EditModel
-
+@model spanish_verbs.Pages.Practice._10VerbsModel
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "10Verbs";
 }
-
-<h1>Edit</h1>
-
-<h4>Word</h4>
-<hr />
+@{
+    Random r = new Random(); 
+    int num = r.Next(0, 2);
+    
+}
+<h3>Learning 10 Verbs at a time!</h3>
+<h1>RandomNumber: @num</h1>
 <div class="row">
     <div class="col-md-4">
         <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Word.Id" />
-            <div class="form-group">
+            @if(num == 0)
+            {
+                <div class="form-group">
                 <label asp-for="Word.ToEnglish" class="control-label"></label>
                 <input asp-for="Word.ToEnglish" class="form-control" />
                 <span asp-validation-for="Word.ToEnglish" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
                 <label asp-for="Word.ToSpanish" class="control-label"></label>
                 <input asp-for="Word.ToSpanish" class="form-control" />
                 <span asp-validation-for="Word.ToSpanish" class="text-danger"></span>
-            </div>
+                </div>
+            }
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

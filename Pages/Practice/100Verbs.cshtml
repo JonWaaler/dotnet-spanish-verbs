@@ -1,0 +1,20 @@
+﻿@page
+@model spanish_verbs.Pages.Practice._100VerbsModel
+@{
+    ViewData["Title"] = "100Verbs";
+}0
+
+<h1>English to Spanish Verb Translation Quiz</h1>
+
+<p>Translate the following verbs from English to Spanish:</p>
+
+<form method="post">
+    @foreach (var verb in Model.Words)
+    {
+            <div>
+                <label>@verb.ToEnglish</label>
+            </div>
+    }
+
+    <button type="submit">Submit</button>
+</form>

@@ -18,5 +18,61 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+
+}
+
+#login {
+    border-radius: 5px;
+    background-color: #0083ff;
+    color: whitesmoke !important;
+    padding: 7px 20px;
+}
+
+/*First Section in the page should stretch the whole page while
+also allowing header and a bit of the next section to be in view */
+section:first-child {
+    min-height: calc(100vh - 200px);
+}
+
+/*Home page*/
+section {
+    margin-top: 40px;
+}
+.table-title {
+    margin: 60px auto 10px;
+    text-align: center;
+
+}
+#table {
+    max-width: 700px;
+    
+}
+#table thead {
+
+}
+#table tbody tr th {
+    color: Highlight;
+}
+.learn-more {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+}
+.flex-item-home-verb {
+    margin: 5px 0;
+    width: max-content;
+}
+.flex-container {
+    display: flex;
+}
+
+/* Practice Index*/
+.test {
+
+}
+
+/* Practice 100Verbs*/
+form {
+    
 }
