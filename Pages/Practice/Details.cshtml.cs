@@ -19,7 +19,7 @@ namespace spanish_verbs.Pages._100verbs
             _context = context;
         }
 
-      public Word Word { get; set; } = default!; 
+        public Word Word { get; set; } = default!; 
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

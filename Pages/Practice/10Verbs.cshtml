@@ -2,38 +2,56 @@
 @model spanish_verbs.Pages.Practice._10VerbsModel
 @{
     ViewData["Title"] = "10Verbs";
-}
-@{
     Random r = new Random(); 
     int num = r.Next(0, 2);
-    
 }
+
 <h3>Learning 10 Verbs at a time!</h3>
-<h1>RandomNumber: @num</h1>
+<h5>@num</h5>
+
+
 <div class="row">
     <div class="col-md-4">
         <form method="post">
+
+            @*Question*@
+            @if(Model.QuestionWords != null){
+                @if(Model.QuestionWords[Model.QuestionsAnswered] != null)
+                {
+                    @if(num == 0)
+                    {
+                        <h6>AskWord: @Model.QuestionWords[Model.QuestionsAnswered].ToEnglish</h6>
+                    }
+                    else
+                    {
+                        <h6>AskWord: @Model.QuestionWords[Model.QuestionsAnswered].ToSpanish</h6>
+                    }
+                }
+            }
+            else
+            {
+                 <h6>Error loading words</h6>
+                
+            }
+
+            @*Input Area*@
             @if(num == 0)
             {
                 <div class="form-group">
-                <label asp-for="Word.ToEnglish" class="control-label"></label>
-                <input asp-for="Word.ToEnglish" class="form-control" />
-                <span asp-validation-for="Word.ToEnglish" class="text-danger"></span>
+                    <label asp-for="Answer" class="control-label"></label>
+                    <input asp-for="Answer" class="form-control" />
                 </div>
             }
             else
             {
                 <div class="form-group">
-                <label asp-for="Word.ToSpanish" class="control-label"></label>
-                <input asp-for="Word.ToSpanish" class="form-control" />
-                <span asp-validation-for="Word.ToSpanish" class="text-danger"></span>
+                    <label asp-for="Answer" class="control-label"></label>
+                    <input asp-for="Answer" class="form-control" />
                 </div>
             }
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
             
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
             </div>
         </form>
     </div>

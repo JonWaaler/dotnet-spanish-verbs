@@ -10,10 +10,9 @@
         public int Id { get; set; }
         public int TotalAnswered { get; set; } = 0;
         public int TotalAnsweredCorrect { get; set; } = 0;
-        public int TotalTests { get; set; } = 0;
         public int TotalTestsFinished { get; set; } = 0;
 
-        // User relation
+        // The user who owns these stats
         public string ApplicationUserId { get; set; } = default!;
         public ApplicationUser ApplicationUser { get; set; } = default!;
     }
