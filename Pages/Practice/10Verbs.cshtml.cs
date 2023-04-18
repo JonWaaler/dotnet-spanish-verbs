@@ -91,7 +91,8 @@ namespace spanish_verbs.Pages.Practice
                 throw new Exception($"10Verbs session returned null, On answer submission.");
 
             // Get Quiz info
-            QuestionWords = JsonConvert.DeserializeObject<List<Word>>(verbs);
+            if (verbs != null)
+                QuestionWords = JsonConvert.DeserializeObject<List<Word>>(verbs);
             QuestionsAnswered = (int)questionsAnswered;
             QuestionsAnsweredCorrect = (int)questionsAnsweredCorrect;
 
@@ -111,25 +112,37 @@ namespace spanish_verbs.Pages.Practice
             }
 
             // Compare the users answer to both translations (temp)
-            if (QuestionWords[QuestionsAnswered].ToEnglish == Answer || QuestionWords[QuestionsAnswered].ToSpanish == Answer)
-            {
-                Console.WriteLine($"Answer is Correct!");
-                QuestionsAnsweredCorrect++;
+            if (QuestionWords != null)
+                if (QuestionWords[QuestionsAnswered].ToEnglish == Answer || QuestionWords[QuestionsAnswered].ToSpanish == Answer)
+                {
+                    Console.WriteLine($"Answer is Correct!");
+                    QuestionsAnsweredCorrect++;
 
-            }
-            else
-            {
-                Console.WriteLine($"Wrong Answer");
-            }
+                }
+                else
+                {
+                    Console.WriteLine($"Wrong Answer");
+                }
 
             // A question was answered so we can go to next question
             QuestionsAnswered++;
 
-            session.SetInt32("10VerbsQuestionsAnswered", QuestionsAnswered);
-            session.SetInt32("10VerbsQuestionsAnsweredCorrect", QuestionsAnsweredCorrect);
+            if (QuestionsAnswered == 9)
+            {
 
-            return Page();
+            }
+            else
+            {
+                // Update the session data
+                session.SetInt32("10VerbsQuestionsAnswered", QuestionsAnswered);
+                session.SetInt32("10VerbsQuestionsAnsweredCorrect", QuestionsAnsweredCorrect);
+            }
+
+            // Clears the quiz form 
+            return RedirectToPage();
+            //return Page();
         }
+
 
         /// <summary>
         /// Starts the quiz session
@@ -155,7 +168,7 @@ namespace spanish_verbs.Pages.Practice
             //Console.WriteLine($"--User Information--");
             //Console.WriteLine($"StoredUserId: {storedUserId}");
             //Console.WriteLine($"CurrentUserId: {currentUserId}");
-            
+
             // Check if there's a session already stored by using the UserId
             if (storedUserId != null)
             {
@@ -168,7 +181,7 @@ namespace spanish_verbs.Pages.Practice
                     var questionsAnsweredCorrect = session.GetInt32("10VerbsQuestionsAnsweredCorrect");
 
                     // Get the list of words the user was using
-                    if(verbs == null || questionsAnswered == null || questionsAnsweredCorrect == null)
+                    if (verbs == null || questionsAnswered == null || questionsAnsweredCorrect == null)
                         throw new Exception($"10Verbs session returned null even though a user session was found. id:{currentUserId}");
 
                     // Get Quiz info

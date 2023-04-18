@@ -6,13 +6,23 @@
 }
 
 <section>
-    <h3>Currently Available Tests:</h3>
-    <div class="" style="display: flex">
-        <div class="m-2 ">
-            <a class="btn btn-primary" asp-area="" asp-page="/Practice/100Verbs">100 Verbs</a>
+    <div id="quiz-cards" class="d-flex justify-content-around">
+        <div id="quiz-card" class="card shadow-sm flex-fill" style="width: 18rem;">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <h5 class="card-title mb-3">10 Verbs</h5>
+                <p class="card-text mb-4">This test will choose 10 random verbs from a list of 100 most commonly used Spanish verbs.</p>
+                <p class="mb-3"><strong>Time:</strong> ~1min</p>
+                <a class="btn btn-primary" asp-area="" asp-page="/Practice/10Verbs">Go Practice</a>
+            </div>
         </div>
-        <div class="m-2 ">
-            <a class="btn btn-primary" asp-area="" asp-page="/Practice/10Verbs">10 Verbs</a>
+        <div id="quiz-card" class="card shadow-sm flex-fill" style="width: 18rem;">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <h5 class="card-title mb-3">100 Verbs</h5>
+                <p class="card-text mb-4">This test is not yet available. Check back soon!</p>
+                <p class="mb-3"><strong>Time:</strong> ~10min</p>
+                <a class="btn btn-secondary disabled" asp-area="" asp-page="#">Coming Soon</a>
+            </div>
         </div>
+
     </div>
 </section>

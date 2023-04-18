@@ -67,6 +67,14 @@ section {
     display: flex;
 }
 
+#quiz-cards {
+    margin: 100px auto;
+    flex-wrap:wrap;
+}
+#quiz-card {
+    margin: 20px;
+}
+
 /* Practice Index*/
 .test {
 
