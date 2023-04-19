@@ -52,6 +52,12 @@ namespace spanish_verbs.Pages.Practice
         // Random id of the word selected for the quiz
         private int RandomWordId;
 
+        private bool quizCompleted = false;
+        public void OnPostResults()
+        {
+            Console.WriteLine("Results");
+        }
+
         public async Task OnGetAsync()
         {
             Console.WriteLine($"10Verbs - ON GET");
@@ -59,92 +65,94 @@ namespace spanish_verbs.Pages.Practice
             // Creates a new session if there is none stored already
             StartSession();
 
-            Console.WriteLine($"GET END");
+            // Check quiz state
+
 
             // Collect model errors for debug
             //var errors = ModelState
             //    .Where(x => x.Value.Errors.Count > 0)
             //    .Select(x => new { x.Key, x.Value.Errors })
             //    .ToArray();
-
-            // Serialize rand word
-            //string randomWord = JsonConvert.SerializeObject(QuestionWord);
-            //Console.WriteLine($"RandomWord-Serialized: {randomWord}");
-
-            // Get session data
-            //QuestionsAnswered = Convert.ToInt32(HttpContext.Session.GetInt32("QuestionsAnswered"));
-            //QuestionsAnsweredCorrect = Convert.ToInt32(HttpContext.Session.GetInt32("QuestionsAnsweredCorrect"));
-            //Console.WriteLine($"QuestionsAnsed: {QuestionsAnswered}");
-
-
-            // Set session state
-            //Request.HttpContext.Session.SetString("QuestionWord", randomWord);
-
-            //Console.WriteLine($"RandomWord: {QuestionWord.ToEnglish}");
-            //Console.WriteLine($"RandomWord: {QuestionWord.ToSpanish}");
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            Console.WriteLine($"10Verbs - ON POST");
-
             var session = HttpContext.Session;
 
-            // Get users session data
-            var verbs = session.GetString("10Verbs");
-            var questionsAnswered = session.GetInt32("10VerbsQuestionsAnswered");
-            var questionsAnsweredCorrect = session.GetInt32("10VerbsQuestionsAnsweredCorrect");
+            var errors = ModelState
+                .Where(x => x.Value.Errors.Count > 0)
+                .Select(x => new { x.Key, x.Value.Errors })
+                .ToArray();
 
-            // Get the list of words the user was using
-            if (verbs == null || questionsAnswered == null || questionsAnsweredCorrect == null)
-                throw new Exception($"10Verbs session returned null, On answer submission.");
-
-            // Get Quiz info
-            if (verbs != null)
-                QuestionWords = JsonConvert.DeserializeObject<List<Word>>(verbs);
-            QuestionsAnswered = (int)questionsAnswered;
-            QuestionsAnsweredCorrect = (int)questionsAnsweredCorrect;
-
-
-            // Collect model errors for debug
-            //var errors = ModelState
-            //    .Where(x => x.Value.Errors.Count > 0)
-            //    .Select(x => new { x.Key, x.Value.Errors })
-            //    .ToArray();
-
-            // Check if all model fields were filled in
-            if (!ModelState.IsValid || _context.Words == null)
+            Console.WriteLine($"10Verbs - ON POST");
+            if (Answer == "Complete")
             {
-                throw new Exception($"ModelState invalid");
+                Console.WriteLine("Quiz completed");
+                session.Clear();
+                return RedirectToPage();
+            }
+            else
+            {
+                Console.WriteLine("Quiz inprogress");
 
-                return Page();
+
+                // Get users session data
+                var verbs = session.GetString("10Verbs");
+                var questionsAnswered = session.GetInt32("10VerbsQuestionsAnswered");
+                var questionsAnsweredCorrect = session.GetInt32("10VerbsQuestionsAnsweredCorrect");
+
+                // Get the list of words the user was using
+                if (verbs == null || questionsAnswered == null || questionsAnsweredCorrect == null)
+                    throw new Exception($"10Verbs session returned null, On answer submission.");
+
+                // Get Quiz info
+                if (verbs != null)
+                    QuestionWords = JsonConvert.DeserializeObject<List<Word>>(verbs);
+                QuestionsAnswered = (int)questionsAnswered;
+                QuestionsAnsweredCorrect = (int)questionsAnsweredCorrect;
+
+
+                // Collect model errors for debug
+                //var errors = ModelState
+                //    .Where(x => x.Value.Errors.Count > 0)
+                //    .Select(x => new { x.Key, x.Value.Errors })
+                //    .ToArray();
+
+                // Check if all model fields were filled in
+                if (!ModelState.IsValid || _context.Words == null)
+                {
+                    throw new Exception($"ModelState invalid");
+
+                    return Page();
+                }
+
+                // Compare the users answer to both translations (temp)
+                if (QuestionWords != null)
+                    if (QuestionWords[QuestionsAnswered].ToEnglish == Answer || QuestionWords[QuestionsAnswered].ToSpanish == Answer)
+                    {
+                        Console.WriteLine($"Answer is Correct!");
+                        QuestionsAnsweredCorrect++;
+
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Wrong Answer");
+                    }
+
+                // A question was answered so we can go to next question
+                QuestionsAnswered++;
+
+
+                // Update the session data
+                session.SetInt32("10VerbsQuestionsAnswered", QuestionsAnswered);
+                session.SetInt32("10VerbsQuestionsAnsweredCorrect", QuestionsAnsweredCorrect);
+
+
+                // Clears the quiz form 
+                return RedirectToPage();
+                //return Page();
             }
 
-            // Compare the users answer to both translations (temp)
-            if (QuestionWords != null)
-                if (QuestionWords[QuestionsAnswered].ToEnglish == Answer || QuestionWords[QuestionsAnswered].ToSpanish == Answer)
-                {
-                    Console.WriteLine($"Answer is Correct!");
-                    QuestionsAnsweredCorrect++;
-
-                }
-                else
-                {
-                    Console.WriteLine($"Wrong Answer");
-                }
-
-            // A question was answered so we can go to next question
-            QuestionsAnswered++;
-
-
-            // Update the session data
-            session.SetInt32("10VerbsQuestionsAnswered", QuestionsAnswered);
-            session.SetInt32("10VerbsQuestionsAnsweredCorrect", QuestionsAnsweredCorrect);
-
-
-            // Clears the quiz form 
-            return RedirectToPage();
-            //return Page();
         }
 
 

@@ -29,6 +29,8 @@ namespace spanish_verbs.Pages._100verbs
             {
                 Word = await _context.Words.ToListAsync();
             }
+
+            HttpContext.Session.Clear();
         }
     }
 }
