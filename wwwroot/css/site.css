@@ -75,6 +75,11 @@ section {
     margin: 20px;
 }
 
+input:focus {
+    outline: none;
+    border: 2px solid red;
+}
+
 /* Practice Index*/
 .test {
 

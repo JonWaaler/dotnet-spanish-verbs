@@ -13,77 +13,130 @@
         <div class="col-md-8 col-lg-6">
             <form method="post" class="card shadow-sm">
                 <div class="card-body">
-
-                    <div class="form-group mb-4">
-                        @if (Model.QuestionWords != null)
-                        {
-                            <div class="flex-container" style="justify-content:space-between">
-                                <p>Correct: @Model.QuestionsAnsweredCorrect</p>
-                                <p>@((Model.QuestionsAnswered + 1))/@Model.QuestionWords.Count</p>
+                    @if (Model.QuestionsAnswered < 10) {
+                        @*Quiz*@
+                        <div class="row">
+                            <div class="col-12">
+                                @if (Model.QuestionWords != null)
+                                {
+                                    <h4 class="card-title mb-3">
+                                        @(
+                                         (Model.QuestionsAnswered + 1)
+                                         )/@Model.QuestionWords.Count
+                                    </h4>
+                                    <h2 class="card-title mb-3">
+                                        @*Choose question language*@
+                                        @if (num == 0)
+                                        {
+                                            @Model.QuestionWords[Model.QuestionsAnswered].ToEnglish
+                                        }
+                                        else
+                                        {
+                                            @Model.QuestionWords[Model.QuestionsAnswered].ToSpanish
+                                        }
+                                    </h2>
+                                }
+                                else
+                                {
+                                    <h5 class="card-title mb-3">Error loading words</h5>
+                                }
                             </div>
-                            @if (Model.QuestionWords[Model.QuestionsAnswered] != null)
-                            {
-                                <h5 class="card-title mb-3">
-                                    Translate:
-                                    @if (num == 0)
-                                    {
-                                        @Model.QuestionWords[Model.QuestionsAnswered].ToEnglish
-                                    }
-                                    else
-                                    {
-                                        @Model.QuestionWords[Model.QuestionsAnswered].ToSpanish
-                                    }
-                                </h5>
-                            }
-                        }
-                        else
-                        {
-                            <h5 class="card-title mb-3">Error loading words</h5>
-                        }
-                    </div>
+                        </div>
 
-                    <div class="form-group mb-4">
-                        <label asp-for="Answer" class="control-label h5"></label>
-                        <input asp-for="Answer" autofocus class="form-control form-control-lg" />
-                    </div>
+                        @*Submit Quiz Answer*@
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="input-group input-group-lg mb-3">
+                                    <input asp-for="Answer" autofocus class="form-control" placeholder="Type your answer here" value="@Model.QuestionWords[Model.QuestionsAnswered].ToSpanish.ToString()" />
+                                    <button type="submit" value="Submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
 
                     @*Check if the person finished the test*@
-                    @if(Model.QuestionsAnswered <= Model.QuestionWords.Count)
+                    @if (Model.QuestionsAnswered >= 10)
                     {
-                        <button type="submit" value="Submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                        <div class="row mt-5">
+                            <div class="col-12">
+                                <h3>
+                                    You've finished the quiz!
+                                </h3>
+                                <p class="text-muted">
+                                    @Model.QuestionsAnsweredCorrect correct out of @Model.QuestionWords.Count
+                                </p>
+                                <button type="submit" value="Submit" class="btn btn-primary btn-lg">
+                                    View Results
+                                </button>
+                            </div>
+                        </div>
                     }
                     else
                     {
-                        <button type="submit" value="Submit" class="btn btn-primary btn-lg btn-block">View Results</button>
+                        <div class="row mt-5">
+                            <div class="col-12">
+                                <p class="text-muted">
+                                    @Model.QuestionsAnsweredCorrect correct out of @Model.QuestionWords.Count
+                                </p>
+                            </div>
+                        </div>
                     }
 
                 </div>
             </form>
+
+            @*Quiz Progress bar*@
+            @if(Model.QuestionsAnswered < 10)
+            {
+                <div class="row mt-3">
+                    <div class="col-12">
+                    <div class="progress shadow-sm">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: @((Model.QuestionsAnswered * 10)+10)%;" aria-valuenow="@Model.QuestionsAnswered" aria-valuemin="0" aria-valuemax="10">
+                            @((Model.QuestionsAnswered * 10) + 10)%
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
         </div>
     </div>
-<div class="debug-section" >
-    <h3>Debug Section</h3>
-    <ol style="display:flex;flex-wrap:wrap">
-            @foreach (var word in Model.QuestionWords)
+    <br />
+    <br />
+    <br />
+    <code class="debug-section p-3">
+        <h3 class="mb-3">Debug Section</h3>
+        <div class="row">
+            @for (int i = 0; i < Model.QuestionWords.Count; i++)
             {
-                @if(word.ToEnglish == @Model.QuestionWords[@Model.QuestionsAnswered].ToEnglish){
-                    <li class="m-3" style="width: 200px;height:40px;color:lawngreen">
-                        <strong>To English:</strong> @word.ToEnglish<br />
-                        <strong>To Spanish:</strong> @word.ToSpanish
-                    </li>
-                }
-                else
-                {
-                    <li class="m-3" style="width: 200px;height:40px;">
-                        <strong>To English:</strong> @word.ToEnglish<br />
-                        <strong>To Spanish:</strong> @word.ToSpanish
-                    </li>
-                }
-                
-                    
-            }
-    </ol>
-    
-</div>
+                var word = Model.QuestionWords[i];
 
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        @*
+                        @if (word.ToEnglish == Model.QuestionWords[Model.QuestionsAnswered].ToEnglish)
+                        *@
+                        @if(Model.QuestionsAnswered == i)
+                        {
+                            <div class="card-body bg-success bg-opacity-25">
+                                <p>@i.</p>
+                                <h5 class="card-title text-dark text-capitalize">@word.ToEnglish</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">@word.ToSpanish</h6>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="card-body">
+                                <p>@(i+1).</p>
+                                <h5 class="card-title text-dark text-capitalize">@word.ToEnglish</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">@word.ToSpanish</h6>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            }
+        </div>
+    </code>
 </section>

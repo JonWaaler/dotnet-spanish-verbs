@@ -12,6 +12,13 @@ using System.Security.Claims;
 
 namespace spanish_verbs.Pages.Practice
 {
+    public class Quiz
+    {
+        public List<Word> Words { get; set; }
+        public List<bool> WordIsEnglish { get; set; }
+        public int QuestionsAnswered = 0;
+        public int QuestionsAnsweredCorrect = 0;
+    }
     public class _10VerbsModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -28,6 +35,8 @@ namespace spanish_verbs.Pages.Practice
         /// </summary>
         public Word QuestionWord { get; set; } = default!;
         public IList<Word> QuestionWords { get; set; } = default!;
+
+        public Quiz Quiz { get; set; }
 
         /// <summary>
         /// The answer received when the user submits their string
@@ -127,16 +136,11 @@ namespace spanish_verbs.Pages.Practice
             // A question was answered so we can go to next question
             QuestionsAnswered++;
 
-            if (QuestionsAnswered == 9)
-            {
 
-            }
-            else
-            {
-                // Update the session data
-                session.SetInt32("10VerbsQuestionsAnswered", QuestionsAnswered);
-                session.SetInt32("10VerbsQuestionsAnsweredCorrect", QuestionsAnsweredCorrect);
-            }
+            // Update the session data
+            session.SetInt32("10VerbsQuestionsAnswered", QuestionsAnswered);
+            session.SetInt32("10VerbsQuestionsAnsweredCorrect", QuestionsAnsweredCorrect);
+
 
             // Clears the quiz form 
             return RedirectToPage();
@@ -189,11 +193,13 @@ namespace spanish_verbs.Pages.Practice
                     QuestionsAnswered = (int)questionsAnswered;
                     QuestionsAnsweredCorrect = (int)questionsAnsweredCorrect;
 
-
-                    Console.WriteLine("10Verbs - Recieved Data");
-                    Console.WriteLine($"Verbs: {QuestionWords}");
+                    Console.WriteLine("___________________________");
+                    Console.WriteLine("-----10Verbs Start-----");
+                    Console.WriteLine($"Verbs: {QuestionWords.Count}");
                     Console.WriteLine($"Answered: {QuestionsAnswered}");
                     Console.WriteLine($"Correct: {QuestionsAnsweredCorrect}");
+                    Console.WriteLine("___________________________");
+
                 }
                 else
                 {
