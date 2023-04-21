@@ -8,6 +8,12 @@ html {
   }
 }
 
+:root {
+    --Primary-col: #ffa500;
+    --Secondary-col: #1e90ff;
+    --Accent-col: #333333;
+}
+
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
@@ -88,4 +94,41 @@ input:focus {
 /* Practice 100Verbs*/
 form {
     
+}
+
+.card-deck {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.card {
+    width: 30%;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #555;
+}
+
+@media screen and (max-width: 768px) {
+    .card-deck {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .card {
+        width: 100%;
+    }
 }
