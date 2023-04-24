@@ -5,8 +5,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="https://i.imgur.com/0ZrOdYv.png" alt="Logo" width="80" height="80">
+  <a href="http://learn-spanish.jonwaaler.com/">
+    <img src="https://i.imgur.com/0I5kook.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Jon Waaler's - 100 Verbs, Learn Spanish</h3>
@@ -128,6 +128,8 @@ Project Link: [https://github.com/JonWaaler/dotnet-spanish-verbs](https://github
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
 [C#]: https://img.shields.io/badge/Microsoft-C%23-brightgreen
 [ASP.NET]: https://img.shields.io/badge/Microsoft-ASP.NET-green
 [ASP.NET-url]: https://dotnet.microsoft.com/en-us/learn/aspnet/what-is-aspnet
