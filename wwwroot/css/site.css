@@ -11,7 +11,8 @@ html {
 :root {
     --Primary-col: #ffa500;
     --Secondary-col: #1e90ff;
-    --Accent-col: #333333;
+    --Background-Dark-col: #333333;
+    --Background-Light-col: whitesmoke;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
