@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace spanish_verbs.Areas.Identity.Pages.Account.Manage
+namespace spanish_verbs.Pages.Account
 {
-    public class StatsModel : PageModel
+    public class IndexModel : PageModel
     {
         public void OnGet()
         {

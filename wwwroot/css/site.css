@@ -35,24 +35,20 @@ body {
     padding: 7px 20px;
 }
 
-/*First Section in the page should stretch the whole page while
-also allowing header and a bit of the next section to be in view */
-section:first-child {
-    min-height: calc(100vh - 200px);
+section:nth-child(2n) {
+    background-color: whitesmoke;
 }
 
 /*Home page*/
 section {
-    margin-top: 40px;
+
 }
 .table-title {
     margin: 60px auto 10px;
     text-align: center;
-
 }
 #table {
     max-width: 700px;
-    
 }
 #table thead {
 
@@ -72,6 +68,9 @@ section {
 }
 .flex-container {
     display: flex;
+}
+.flex-nav {
+    background-color: aqua;
 }
 
 #quiz-cards {

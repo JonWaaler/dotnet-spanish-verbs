@@ -4,13 +4,12 @@
     ViewData["Title"] = "100 Verbs";
 }
 
-<section>
-    <div class="text-center">
+<section class="">
+    <div class="text-center container mt-5">
         <h1 class="display-2">100 Verbs</h1>
         <h3 class="display-6">Learn the most common Spanish verbs!</h3>
     </div>
-
-    <div class="card-deck container mt-5" style="max-width: 850px">
+    <div class="card-deck container mt-5 px-5" style="max-width: 850px">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Foundation of Spanish</h5>
@@ -31,8 +30,23 @@
         </div>
     </div>
 
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+        <path fill="whitesmoke" fill-opacity="1" d="M0,192L120,213.3C240,235,480,277,720,282.7C960,288,1200,256,1320,240L1440,224L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
+    </svg>
+</section>
 
-    <h4 class="table-title">Top 10 verbs</h4>
+
+<section>
+    <div class="learn-more container">
+        <h4 class="flex-item-home-verb display-5 mb-4">Start Learning Spanish!</h4>
+        <a class="flex-item-home-verb btn btn-primary btn-lg" asp-area="" asp-page="/Practice/index">Practice</a>
+    </div>
+</section>
+<section class="mb-5">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 260">
+      <path fill="whitesmoke" fill-opacity="1" d="M0,192L120,170.7C240,149,480,107,720,117.3C960,128,1200,192,1320,224L1440,256L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z"></path>
+    </svg>
+    <h1 class="table-title display-5 container">Top 10 verbs</h1>
     <table class="table table-striped table-hover container-xl" id="table">
         <thead class="thead-dark">
             <tr>
@@ -51,16 +65,11 @@
                     <td scope="row">
                     @Html.DisplayFor(modelItem => Model.Words[i].ToEnglish)
                     </td>
-                    <th>
+                    <th class="" style="color:dodgerblue">
                     @Html.DisplayFor(modelItem => Model.Words[i].ToSpanish)
                     </th>
                 </tr>
             }
         </tbody>
     </table>
-
-    <div class="learn-more" style="margin: 50px auto">
-        <h4 class="flex-item-home-verb display-5 mb-4">Start Learning Spanish!</h4>
-        <a class="flex-item-home-verb btn btn-primary btn-lg" asp-area="" asp-page="/Practice/index">Practice</a>
-    </div>
 </section>
