@@ -32,6 +32,7 @@ namespace spanish_verbs.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
+                    DateAccountCreated = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -180,8 +181,6 @@ namespace spanish_verbs.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     TotalAnswered = table.Column<int>(type: "INTEGER", nullable: false),
                     TotalAnsweredCorrect = table.Column<int>(type: "INTEGER", nullable: false),
-                    TotalTests = table.Column<int>(type: "INTEGER", nullable: false),
-                    TotalTestsFinished = table.Column<int>(type: "INTEGER", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -342,8 +341,7 @@ namespace spanish_verbs.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_ResultsData_ApplicationUserId",
                 table: "ResultsData",
-                column: "ApplicationUserId",
-                unique: true);
+                column: "ApplicationUserId");
         }
 
         /// <inheritdoc />

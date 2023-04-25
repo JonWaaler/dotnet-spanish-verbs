@@ -20,9 +20,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         // Add your customizations after calling base.OnModelCreating(builder);
 
         builder.Entity<ApplicationUser>()
-                .HasOne(e => e.ResultsData)
+                .HasMany(e => e.ResultsData)
                 .WithOne(e => e.ApplicationUser)
-                .HasForeignKey<ResultsData>(e => e.ApplicationUserId)
+                .HasForeignKey(e => e.ApplicationUserId)
                 .IsRequired();
 
         builder.Entity<Word>().HasData(infinitive_verbs);

@@ -11,14 +11,14 @@ using spanish_verbs.Data;
 namespace spanish_verbs.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230411192634_InitialCreate")]
+    [Migration("20230424232844_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.4");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -164,6 +164,9 @@ namespace spanish_verbs.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("DateAccountCreated")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
@@ -232,16 +235,9 @@ namespace spanish_verbs.Migrations
                     b.Property<int>("TotalAnsweredCorrect")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("TotalTests")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TotalTestsFinished")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId")
-                        .IsUnique();
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("ResultsData");
                 });
@@ -921,8 +917,8 @@ namespace spanish_verbs.Migrations
             modelBuilder.Entity("spanish_verbs.Models.ResultsData", b =>
                 {
                     b.HasOne("spanish_verbs.Models.ApplicationUser", "ApplicationUser")
-                        .WithOne("ResultsData")
-                        .HasForeignKey("spanish_verbs.Models.ResultsData", "ApplicationUserId")
+                        .WithMany("ResultsData")
+                        .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -931,8 +927,7 @@ namespace spanish_verbs.Migrations
 
             modelBuilder.Entity("spanish_verbs.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("ResultsData")
-                        .IsRequired();
+                    b.Navigation("ResultsData");
                 });
 #pragma warning restore 612, 618
         }
