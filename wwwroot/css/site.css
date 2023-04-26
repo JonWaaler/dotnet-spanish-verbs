@@ -122,6 +122,26 @@ form {
     color: #555;
 }
 
+/* ICONS */
+.icon svg path {
+    stroke: black !important;
+    fill: transparent !important;
+}
+.icon svg {
+    stroke: black !important;
+    fill: transparent !important;
+}
+
+.icon:hover svg path {
+    stroke: #0083ff !important;
+    fill: transparent !important;
+}
+.icon:hover svg {
+    stroke: #0083ff !important;
+    fill: transparent !important;
+}
+
+/* For screens smaller than 768px*/
 @media screen and (max-width: 768px) {
     .card-deck {
         flex-wrap: wrap;
@@ -130,5 +150,60 @@ form {
 
     .card {
         width: 100%;
+    }
+    
+    header {
+        z-index: 1030;
+    }
+    #nav {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        border-top: 1px solid #dee2e6;
+        justify-content: center;
+    }
+
+    #nav div ul {
+        justify-content: center;
+        align-items: center;
+    }
+    .lightning-head {
+        display:none;
+    }
+    
+}
+
+/* For screens Bigger than 768px*/
+@media screen and (min-width: 769px) {
+    header {
+        border-right: 1px solid #dee2e6;
+        z-index: 1030;
+        position: sticky;
+        top: 0;
+    }
+    .sidebar {
+        display: flex;
+    }
+    #nav {
+        border-right: 1px solid #dee2e6;
+        height: 100%;
+        align-items: start;
+
+    }
+    #nav div {
+        flex-direction: column;
+    }
+    #nav div ul {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #nav div div {
+        margin: inherit 40px;
+    }
+    .lightning-sidebar {
+        display:none;
     }
 }
