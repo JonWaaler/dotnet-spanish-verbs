@@ -226,7 +226,7 @@ form {
 
     #nav {
         border-right: 1px solid #dee2e6;
-        height: 100%;
+        height: calc(100vh - 73px);
         align-items: start;
     }
 
