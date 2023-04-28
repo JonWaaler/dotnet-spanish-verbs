@@ -181,6 +181,7 @@ namespace spanish_verbs.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     TotalAnswered = table.Column<int>(type: "INTEGER", nullable: false),
                     TotalAnsweredCorrect = table.Column<int>(type: "INTEGER", nullable: false),
+                    DateTaken = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>

@@ -1,4 +1,9 @@
-﻿namespace spanish_verbs
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using spanish_verbs.Data;
+using spanish_verbs.Models;
+
+namespace spanish_verbs
 {
     public static class Utils
     {
@@ -20,5 +25,90 @@
             }
         }
 
+        public static async Task GetActiveStreak(ApplicationDbContext _context, UserManager<ApplicationUser> _userManager, HttpContext _httpContext)
+        {
+            // Calculate Daily Active Streak
+            var user = await _userManager.GetUserAsync(_httpContext.User);
+            if (user == null)
+                return;
+            var resultsData = await _context.ResultsData
+                .Where(e => e.ApplicationUserId == user.Id)
+                .ToListAsync();
+
+            if(resultsData.Count <= 0)
+            {
+                if(user != null)
+                {
+                    user.CurrectActiveStreak = 0;
+                    await _context.SaveChangesAsync();
+                }
+                    
+                _httpContext.Session.SetInt32("Streak", 0);
+
+                return;
+            }
+
+            //Console.WriteLine($"______________________________");
+            //Console.WriteLine($"Calculating User ActiveStreak");
+            //Console.WriteLine($"quizResCount: {resultsData.Count}");
+            //Console.WriteLine($"______________________________");
+
+            DateTime dateToday = new();
+            dateToday = DateTime.Today;
+            int activeStreak = 0;
+            Console.WriteLine($"TodaysDate: {dateToday}");
+
+            var lastEntryDate = resultsData[resultsData.Count - 1].DateTaken;
+
+            // Check if the user has NOT taken their daily quiz
+            if (lastEntryDate.Date != dateToday.Date)
+            {
+                // Check if last quiz matches yesterdays date
+                var yesterdayDate = dateToday.AddDays(-1);
+                if (lastEntryDate.Date == yesterdayDate.Date)
+                {
+                    dateToday = dateToday.AddDays(-1);
+                }
+                else
+                {
+                    activeStreak = 0;
+                    // The user hasn't taken their daily test, however
+                    // the user did yesterdays
+                }
+            }
+
+            // Loop assumes that you have submitted you daily quiz
+            for (int i = resultsData.Count - 1; i >= 0; i--)
+            {
+                //Console.WriteLine($"___________________________");
+                //Console.WriteLine($"Index: {i}");
+                //Console.WriteLine($"activeStreak: {activeStreak}");
+
+                if (resultsData[i].DateTaken.Date == dateToday.Date)
+                {
+                    Console.WriteLine($"Date Match: Streak++");
+                    activeStreak++;
+                    dateToday = dateToday.AddDays(-1);
+                }
+                // Check if duplicate
+                else if (resultsData[i].DateTaken.Date == dateToday.AddDays(1).Date)
+                {
+                    Console.WriteLine($"Date Match (prevDate): Found Duplicate");
+
+                }
+                else
+                {
+                    // We can terminate the loop because at this point the
+                    // the date stamp we are looking at is not the next day or a duplicate
+                    Console.WriteLine("Date Match FAIL, streak stop");
+                    break;
+                }
+            }
+
+            user.CurrectActiveStreak = activeStreak;
+            await _context.SaveChangesAsync();
+
+            _httpContext.Session.SetInt32("Streak", activeStreak);
+        }
     }
 }

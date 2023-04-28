@@ -226,6 +226,9 @@ namespace spanish_verbs.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("DateTaken")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("TotalAnswered")
                         .HasColumnType("INTEGER");
 

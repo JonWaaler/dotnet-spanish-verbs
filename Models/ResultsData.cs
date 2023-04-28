@@ -9,10 +9,15 @@
         public int TotalAnswered { get; set; } = 0;
         public int TotalAnsweredCorrect { get; set; } = 0;
 
-        public DateTime DateTaken = DateTime.Today;
+        public DateTime DateTaken { get; set; } = default!;
 
         // The user who owns these stats
         public string ApplicationUserId { get; set; } = default!;
         public ApplicationUser ApplicationUser { get; set; } = default!;
+
+        //public ResultsData()
+        //{
+        //    DateTaken = DateTime.Today;
+        //}
     }
 }

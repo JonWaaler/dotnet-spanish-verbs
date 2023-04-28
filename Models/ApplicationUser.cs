@@ -13,5 +13,10 @@ namespace spanish_verbs.Models
 
         public int CurrectActiveStreak = 0; // the active days streak
 
+        public ApplicationUser() 
+        { 
+            DateAccountCreated= DateTime.Today;
+        }
+
     }
 }

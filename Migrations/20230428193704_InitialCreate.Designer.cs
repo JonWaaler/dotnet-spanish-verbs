@@ -11,7 +11,7 @@ using spanish_verbs.Data;
 namespace spanish_verbs.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230424232844_InitialCreate")]
+    [Migration("20230428193704_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -227,6 +227,9 @@ namespace spanish_verbs.Migrations
 
                     b.Property<string>("ApplicationUserId")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateTaken")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("TotalAnswered")
