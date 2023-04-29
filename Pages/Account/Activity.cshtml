@@ -1,0 +1,78 @@
+﻿@page
+@model spanish_verbs.Pages.Account.ActivityModel
+@{
+    var currentDate = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, TimeZoneInfo.Local.Id, "Eastern Standard Time");
+    currentDate = currentDate.AddMonths(0);
+    var daysInMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
+    var firstDayOfMonth = new DateTime(currentDate.Year, currentDate.Month, 1);
+    SortedDictionary<string, int> daysOfWeek = new SortedDictionary<string, int>();
+    daysOfWeek.Add("Su", 0);
+    daysOfWeek.Add("Mo", 1);
+    daysOfWeek.Add("Tu", 2);
+    daysOfWeek.Add("We", 3);
+    daysOfWeek.Add("Th", 4);
+    daysOfWeek.Add("Fr", 5);
+    daysOfWeek.Add("Sa", 6);
+    var offset = daysOfWeek[firstDayOfMonth.DayOfWeek.ToString().Substring(0, 2)];
+    var resultsFromMonth = Model.resultsData.Where(e => e.DateTaken.Month == currentDate.Month).ToList();
+}
+
+<section>
+    <h1 class="display-4 mt-5 mx-5">User Activity</h1>
+    <div>Offset: @offset</div>
+    <div>Current Date: @currentDate.DayOfWeek @currentDate</div>
+    <div>FirstDay-DayofWeek: @firstDayOfMonth.DayOfWeek</div>
+    <div>firstdayOfMonth: @firstDayOfMonth</div>
+    <div>TimeZone: @TimeZone.CurrentTimeZone.StandardName</div>
+    <div>DayOfWeek: @firstDayOfMonth.DayOfWeek.ToString().Substring(0, 2)</div>
+
+    <div>resultsFromMonth: @resultsFromMonth.Count</div>
+
+    <div class="month mt-5 mx-auto">
+        <h4 class="text-center p-1 display-6" style="color:#595959;">@currentDate.ToString("M")</h4>
+        <div class="m-1 flex-container justify-content-between border-bottom">
+            <h6 class="day-name">Su</h6>
+            <h6 class="day-name">Mo</h6>
+            <h6 class="day-name">Tu</h6>
+            <h6 class="day-name">We</h6>
+            <h6 class="day-name">Th</h6>
+            <h6 class="day-name">Fr</h6>
+            <h6 class="day-name">Sa</h6>
+        </div>
+        @for (int j = 0; j < 6; j++)
+        {
+            <div class="week flex-container">
+                @for (int i = 0; i < 7; i++)
+                {
+                    var dayNumber = i + 1 + (j * 7);
+                    var isActiveDay = resultsFromMonth.Where(e => e.DateTaken.Day == (dayNumber-offset)).ToList();
+
+                    @if (dayNumber > offset && dayNumber-offset-1 < daysInMonth)
+                    {
+                        // Create a visible day on the calendar
+
+                        @if (isActiveDay.Count > 0)
+                        {
+                            <div class="day day-active text-center">@(dayNumber - offset)</div>
+                            
+                        }
+                        else
+                        {
+                        <div class="day text-center">@(dayNumber - offset)</div>
+                            
+                        }
+                        
+                    }
+                    else
+                    {
+                        <div class="day text-center hidden">0</div>
+
+                    }
+                    
+                }
+            </div>
+        }
+    </div>
+    <p class="text-center">Progress Calendar W.I.P.</p>
+
+</section>

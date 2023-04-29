@@ -1,0 +1,55 @@
+﻿@page
+@model spanish_verbs.Pages.res.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_Layout";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ResultsData[0].TotalAnswered)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResultsData[0].TotalAnsweredCorrect)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResultsData[0].DateTaken)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResultsData[0].ApplicationUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ResultsData) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalAnswered)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalAnsweredCorrect)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTaken)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

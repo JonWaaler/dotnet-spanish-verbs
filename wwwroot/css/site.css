@@ -154,6 +154,44 @@ form {
     color: darkred;
 }
 
+/*Calendar*/
+
+.month {
+    width: max-content;
+    height: max-content;
+    padding: 10px;
+    /*background-color: steelblue;*/
+    border-radius: 8px;
+    border: 2px solid grey;
+}
+.week {
+    margin: 4px 4px;
+    padding: 2px 4px;
+    border-radius: 25px
+}
+.day {
+    margin: 4px;
+    padding: 3px 0 0 0;
+    width: 2rem;
+    height: 2rem;
+    color: #5C5C5C;
+    font-weight: 600;
+    border-radius: 25px;
+}
+.day-active {
+    background-color: #CBF1CD;
+}
+.hidden {
+    color: transparent;
+}
+.day-name {
+    margin: 1px;
+    width: 2rem;
+    text-align: center;
+    color: silver;
+}
+
+
 /* For screens smaller than 768px*/
 @media screen and (max-width: 768px) {
     .card-deck {

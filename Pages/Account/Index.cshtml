@@ -1,18 +1,63 @@
 ﻿@page
 @model spanish_verbs.Pages.Account.IndexModel
 @{
+
+    var totalAnswered = Model.ApplicationUser.ResultsData.Sum(e => e.TotalAnswered);
+    var totalCorrect = Model.ApplicationUser.ResultsData.Sum(e => e.TotalAnsweredCorrect);
+    var testsCompleted = Model.ApplicationUser.ResultsData.Count;
+    var avgScore = ((float)totalCorrect / (float)totalAnswered) * 100f;
+
+    var activeStreak = HttpContext.Session.GetInt32("Streak");
+    if(activeStreak == null)
+    {
+        activeStreak = 0;
+    }
 }
 
 <section class="m-5">
-    <h1 class="display-4">Your Stats</h1>
+    <h1 class="display-4 text-center">Your Stats</h1>
     <div class="m-4 p-4">
-        <h4 class="">Your Quizes</h4>
         <div>
-            <h6>Active Streak: </h6>
-            <h6>Tests Completed: </h6>
-            <h6>Average Score: </h6>
-            <h6>Account Created: @Model.ApplicationUser.DateAccountCreated</h6>
+            <h4 class="display-6">
+                Daily Active Streak
+            </h4>
+            @*Lightning*@
+                <div class="" style="">
+                    <a class="nav-link text-dark flex-container m-0 p-1 justify-content-start align-items-center" style="" asp-area="" asp-page="/Account/index" style="">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="38" height="38" viewBox="0 0 32 32" xml:space="preserve">
+                            <rect x="0" y="0" width="100%" height="100%" fill="transparent"></rect>
+                            <g transform="matrix(1 0 0 1 16 16)" id="9b89280f-36bc-46bb-808a-5aa344bf6e28">
+                            <rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1; visibility: hidden;" vector-effect="non-scaling-stroke" x="-16" y="-16" rx="0" ry="0" width="32" height="32" />
+                                                                </g>
+                            <g transform="matrix(Infinity NaN NaN Infinity 0 0)" id="c2609733-17c4-4684-8c12-eecf855240d2">
+                                                                </g>
+                            <g transform="matrix(1.11 0 0 1.56 16 16)">
+                            <polygon style="stroke: rgb(0,176,255); stroke-width: 0; stroke-dasharray: none; stroke-linecap: square; stroke-dashoffset: 0; stroke-linejoin: bevel; stroke-miterlimit: 4; fill: rgb(0,176,255); fill-rule: nonzero; opacity: 1;" points="1,-10 -9,2 0,2 -1,10 9,-2 0,-2 1,-10 " />
+                            </g>
+                        </svg>
+                        <h3 class="m-0" style="color: rgb(0,176,255); font-size:38px;">@activeStreak</h3>
+                    </a>
+                </div>
+            <p>Complete a test everyday to build a streak</p>
+
+            @if (testsCompleted > 0)
+            {
+                <div>
+                    <br />
+                    <h4 class="display-6">Your Quizes</h4>
+                    <p><strong>Tests Completed: </strong> @testsCompleted</p>
+                    <p><strong>Total Answered: </strong> @totalAnswered</p>
+                    <p><strong>Total Correct: </strong> @totalCorrect</p>
+                    <p><strong>Average Score: </strong> @avgScore%</p>
+                    <br />
+                </div>
+            }
+            else
+            {
+                <h6>N/A - Complete a test first</h6>
+            }
+            <h4 class="display-6">Account Created</h4>
+            <h6>@Model.ApplicationUser.DateAccountCreated.Date.ToString("M") @Model.ApplicationUser.DateAccountCreated.Date.Year</h6>
         </div>
     </div>
-
 </section>
