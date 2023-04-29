@@ -48,11 +48,6 @@ namespace spanish_verbs
                 return;
             }
 
-            //Console.WriteLine($"______________________________");
-            //Console.WriteLine($"Calculating User ActiveStreak");
-            //Console.WriteLine($"quizResCount: {resultsData.Count}");
-            //Console.WriteLine($"______________________________");
-
             DateTime dateToday = new();
             dateToday = DateTime.Today;
             int activeStreak = 0;
@@ -72,18 +67,12 @@ namespace spanish_verbs
                 else
                 {
                     activeStreak = 0;
-                    // The user hasn't taken their daily test, however
-                    // the user did yesterdays
                 }
             }
 
             // Loop assumes that you have submitted you daily quiz
             for (int i = resultsData.Count - 1; i >= 0; i--)
             {
-                //Console.WriteLine($"___________________________");
-                //Console.WriteLine($"Index: {i}");
-                //Console.WriteLine($"activeStreak: {activeStreak}");
-
                 if (resultsData[i].DateTaken.Date == dateToday.Date)
                 {
                     Console.WriteLine($"Date Match: Streak++");
@@ -94,13 +83,9 @@ namespace spanish_verbs
                 else if (resultsData[i].DateTaken.Date == dateToday.AddDays(1).Date)
                 {
                     Console.WriteLine($"Date Match (prevDate): Found Duplicate");
-
                 }
                 else
                 {
-                    // We can terminate the loop because at this point the
-                    // the date stamp we are looking at is not the next day or a duplicate
-                    Console.WriteLine("Date Match FAIL, streak stop");
                     break;
                 }
             }

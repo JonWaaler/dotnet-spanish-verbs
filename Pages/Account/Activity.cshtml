@@ -19,14 +19,7 @@
 
 <section>
     <h1 class="display-4 mt-5 mx-5">User Activity</h1>
-    <div>Offset: @offset</div>
-    <div>Current Date: @currentDate.DayOfWeek @currentDate</div>
-    <div>FirstDay-DayofWeek: @firstDayOfMonth.DayOfWeek</div>
-    <div>firstdayOfMonth: @firstDayOfMonth</div>
-    <div>TimeZone: @TimeZone.CurrentTimeZone.StandardName</div>
-    <div>DayOfWeek: @firstDayOfMonth.DayOfWeek.ToString().Substring(0, 2)</div>
 
-    <div>resultsFromMonth: @resultsFromMonth.Count</div>
 
     <div class="month mt-5 mx-auto">
         <h4 class="text-center p-1 display-6" style="color:#595959;">@currentDate.ToString("M")</h4>
@@ -74,5 +67,7 @@
         }
     </div>
     <p class="text-center">Progress Calendar W.I.P.</p>
-
+    <br/>
+    <div class="text-center">Current Date: @currentDate.DayOfWeek @currentDate</div>
+    <div class="text-center">TimeZone: @TimeZone.CurrentTimeZone.StandardName</div>
 </section>

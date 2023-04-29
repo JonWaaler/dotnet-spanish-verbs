@@ -79,12 +79,6 @@ namespace spanish_verbs.Pages.Practice
             }
             else
             {
-                Console.WriteLine("");
-                Console.WriteLine("");
-
-                Console.WriteLine("___________________________");
-                Console.WriteLine("QUIZ IN PROGRESS");
-                Console.WriteLine("___________________________");
 
                 // Get users session data
                 var verbs = session.GetString("10Verbs");
@@ -133,12 +127,6 @@ namespace spanish_verbs.Pages.Practice
                 // Check if quiz complete
                 if(QuestionsAnswered >= 10)
                 {
-                    //Console.WriteLine("");
-                    //Console.WriteLine("");
-                    //Console.WriteLine("___________________________");
-                    //Console.WriteLine("QUIZ COMPLETED");
-                    //Console.WriteLine("___________________________");
-
                     // Create Results object to add to users resultsData list
                     var user = await _userManager.GetUserAsync(HttpContext.User);
                     ResultsData resultsData = new ResultsData();
@@ -149,27 +137,13 @@ namespace spanish_verbs.Pages.Practice
                     resultsData.DateTaken = DateTime.Today;
                     _context.ResultsData.Add(resultsData);
 
-                    // Update Current active streak
-                    //user.CurrectActiveStreak = user.CurrectActiveStreak + 1;
-
                     // Save db changes
                     await _context.SaveChangesAsync();
-
-                    // DEBUG
-                    //Console.WriteLine($"_________________________");
-                    //Console.WriteLine($"RESULTS DATA SUBMITTED:");
-                    //Console.WriteLine($"ApplicationUser: {user.Email}");
-                    //Console.WriteLine($"TotalAnswered: {QuestionsAnswered}");
-                    //Console.WriteLine($"TotalCorrect: {QuestionsAnsweredCorrect}");
-                    //Console.WriteLine($"--------------------------");
-                    //Console.WriteLine("");
-                    //Console.WriteLine("");
                 }
 
 
                 // Clears the quiz form 
                 return RedirectToPage();
-                //return Page();
             }
 
         }
@@ -194,12 +168,6 @@ namespace spanish_verbs.Pages.Practice
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var currentUserId = user.Id;
 
-            // DEBUG USER SESSION
-            //Console.WriteLine($"--User Information--");
-            //Console.WriteLine($"StoredUserId: {storedUserId}");
-            //Console.WriteLine($"CurrentUserId: {currentUserId}");
-
-            // Check if there's a session already stored by using the UserId
             if (storedUserId != null)
             {
                 // Check if the storedUserId we found matches the user currently logged in
@@ -219,14 +187,6 @@ namespace spanish_verbs.Pages.Practice
                         QuestionWords = JsonConvert.DeserializeObject<List<Word>>(verbs);
                     QuestionsAnswered = (int)questionsAnswered;
                     QuestionsAnsweredCorrect = (int)questionsAnsweredCorrect;
-
-                    // DEBUG
-                    //Console.WriteLine("___________________________");
-                    //Console.WriteLine("-----10Verbs Start-----");
-                    //Console.WriteLine($"Verbs: {QuestionWords.Count}");
-                    //Console.WriteLine($"Answered: {QuestionsAnswered}");
-                    //Console.WriteLine($"Correct: {QuestionsAnsweredCorrect}");
-                    //Console.WriteLine("___________________________");
 
                 }
                 else
@@ -298,11 +258,6 @@ namespace spanish_verbs.Pages.Practice
                 // add word
                 randomWords.Add(await GetWord(randomWordId));
             }
-
-            // DEBUG: Print list of words
-            //var s = JsonConvert.SerializeObject(randomWords, Formatting.Indented);
-            //Console.WriteLine("CREATED WORDS LIST:");
-            //Console.WriteLine(s);
 
             return randomWords;
         }

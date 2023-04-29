@@ -28,10 +28,6 @@ namespace spanish_verbs.Pages.Account
 
             resultsData = await _context.ResultsData
                 .Include(r => r.ApplicationUser).ToListAsync();
-
-            Console.WriteLine($"_________________________________");
-            Console.WriteLine("ACTIVITY VIEW");
-            Console.WriteLine($"resultsdata: {resultsData.Count}");
         }
     }
 }
