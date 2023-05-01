@@ -56,6 +56,21 @@
             }
         </div>
     </div>
+    @if (!SignInManager.IsSignedIn(User))
+    {
+        <div class="bg-light border-bottom p-2 lightning-sidebar">
+            <div class="container">
+        
+            @*Login*@
+            <div class="nav-link" style="width:max-content; margin-left:auto">
+                <a class="nav-link" id="login" asp-area="Identity" asp-page="/Account/Login">
+                    Login
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-in"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+    }
     <div class="flex-container">
         @*Mobile Navbar*@
         <header class="bg-light">
@@ -93,7 +108,7 @@
                                 <polygon style="stroke: rgb(0,176,255); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: bevel; stroke-miterlimit: 4; fill: rgb(0,176,255); fill-rule: nonzero; opacity: 1;" points="1,-10 -9,2 0,2 -1,10 9,-2 0,-2 1,-10 " />
                                      </g>
                                      </svg>
-                                <h3 class="m-0" style="color: rgb(0,176,255); font-size:38px;">57</h3>
+                                <h3 class="m-0" style="color: rgb(0,176,255); font-size:38px;">@Context.Session.GetInt32("Streak")</h3>
                             </a>
                         </div>
                     }
