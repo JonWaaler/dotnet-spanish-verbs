@@ -52,100 +52,159 @@ namespace spanish_verbs.Pages.Practice
         /// </summary>
         public int QuestionsAnsweredCorrect = 0;
 
+        
+        public bool QuestionChecked = false;
+        public bool IsCorrect = false;
+
 
         public async Task OnGetAsync()
         {
             Console.WriteLine($"10Verbs - ON GET");
 
+            QuestionChecked = HttpContext.Session.GetInt32("10VerbsQuestionChecked") == 1;
+            IsCorrect = HttpContext.Session.GetInt32("10VerbsIsCorrect") == 1;
+
             // Creates a new session if there is none stored already
             StartSession();
-
-
         }
 
-        
+        /// <summary>
+        /// Connects to a link element and is show when the quiz hits
+        /// the final page
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult OnGetNewQuiz()
+        {
+            var session = HttpContext.Session;
+
+            Console.WriteLine("SESSION CLEARED! get");
+            session.Clear();
+            return RedirectToPage();
+        }
+
+
 
         public async Task<IActionResult> OnPostAsync()
         {
             var session = HttpContext.Session;
 
-            //Console.WriteLine($"10Verbs - ON POST");
-            if (Answer == "Complete")
+            GetData(session);
+
+
+
+
+            QuestionChecked = session.GetInt32("10VerbsQuestionChecked") == 1;
+            IsCorrect = session.GetInt32("10VerbsIsCorrect") == 1;
+
+            // On user click post button...
+            // if true: question has been checked and they want the next question
+            // if false: the user wants to check their answer results
+            if(QuestionChecked)
             {
-
-
-                session.Clear();
-                return RedirectToPage();
-            }
-            else
-            {
-
-                // Get users session data
-                var verbs = session.GetString("10Verbs");
-                var questionsAnswered = session.GetInt32("10VerbsQuestionsAnswered");
-                var questionsAnsweredCorrect = session.GetInt32("10VerbsQuestionsAnsweredCorrect");
-
-                // Get the list of words the user was using
-                if (verbs == null || questionsAnswered == null || questionsAnsweredCorrect == null)
-                    throw new Exception($"10Verbs session returned null, On answer submission.");
-
-                // Get Quiz info
-                if (verbs != null)
-                    QuestionWords = JsonConvert.DeserializeObject<List<Word>>(verbs);
-                QuestionsAnswered = (int)questionsAnswered;
-                QuestionsAnsweredCorrect = (int)questionsAnsweredCorrect;
-
-
-                // Check if all model fields were filled in
-                if (!ModelState.IsValid || _context.Words == null)
-                {
-                    throw new Exception($"ModelState invalid");
-
-                    //return Page();
-                }
-
-                // Compare the users answer to both translations (temp)
-                if (QuestionWords != null)
-                    if (QuestionWords[QuestionsAnswered].ToEnglish == Answer || QuestionWords[QuestionsAnswered].ToSpanish == Answer)
-                    {
-                        Console.WriteLine($"Answer is Correct!");
-                        QuestionsAnsweredCorrect++;
-
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Wrong Answer");
-                    }
-
                 // A question was answered so we can go to next question
                 QuestionsAnswered++;
 
                 // Update the session data
                 session.SetInt32("10VerbsQuestionsAnswered", QuestionsAnswered);
                 session.SetInt32("10VerbsQuestionsAnsweredCorrect", QuestionsAnsweredCorrect);
+                session.SetInt32("10VerbsQuestionChecked", 0);
+                session.SetInt32("10VerbsIsCorrect", 0);
 
+
+                // Next question
                 // Check if quiz complete
-                if(QuestionsAnswered >= 10)
+                if (QuestionsAnswered >= 10)
                 {
-                    // Create Results object to add to users resultsData list
-                    var user = await _userManager.GetUserAsync(HttpContext.User);
-                    ResultsData resultsData = new ResultsData();
-                    resultsData.ApplicationUserId = user.Id;
-                    resultsData.ApplicationUser = user;
-                    resultsData.TotalAnswered = QuestionsAnswered;
-                    resultsData.TotalAnsweredCorrect = QuestionsAnsweredCorrect;
-                    resultsData.DateTaken = DateTime.Today;
-                    _context.ResultsData.Add(resultsData);
-
-                    // Save db changes
-                    await _context.SaveChangesAsync();
+                    await CompleteQuiz();
                 }
+            }
+            else
+            {
+                // Check if all model fields were filled in
+                if (!ModelState.IsValid || _context.Words == null)
+                    Answer = "";
 
+                // Validate answer
+                // Compare the users answer to both translations (temp)
+                if (QuestionWords != null && QuestionsAnswered >= 0 && QuestionsAnswered < QuestionWords.Count)
+                {
+                    QuestionChecked= true;
 
-                // Clears the quiz form 
-                return RedirectToPage();
+                    if (QuestionWords[QuestionsAnswered].ToEnglish == Answer || QuestionWords[QuestionsAnswered].ToSpanish == Answer)
+                    {
+                        QuestionsAnsweredCorrect++;
+                        IsCorrect = true;
+                    }
+                    else
+                    {
+                        IsCorrect = false;
+                    }
+
+                    session.SetInt32("10VerbsQuestionChecked", QuestionChecked == true ? 1: 0);
+                    session.SetInt32("10VerbsIsCorrect", IsCorrect == true ? 1: 0);
+                    Console.WriteLine("Saved QuestionChecked Results");
+                }
             }
 
+
+
+
+            // Clears the quiz form 
+            return RedirectToPage();
+        }
+
+        /// <summary>
+        /// We need to get and check if there was previous quiz data,
+        /// this info tells us if the user is still doing a quiz or if they are done.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <exception cref="Exception"></exception>
+        private void GetData(ISession session)
+        {
+            // Get users session data
+            var verbs = session.GetString("10Verbs");
+            var questionsAnswered = session.GetInt32("10VerbsQuestionsAnswered");
+            var questionsAnsweredCorrect = session.GetInt32("10VerbsQuestionsAnsweredCorrect");
+
+            // Get the list of words the user was using
+            if (verbs == null || questionsAnswered == null || questionsAnsweredCorrect == null)
+                throw new Exception($"10Verbs session returned null, On answer submission.");
+
+            // Allows Razor pages to access this information
+            QuestionWords = JsonConvert.DeserializeObject<List<Word>>(verbs);
+            QuestionsAnswered = (int)questionsAnswered;
+            QuestionsAnsweredCorrect = (int)questionsAnsweredCorrect;
+        }
+
+        private async void NextQuestion()
+        {
+
+        }
+
+        private async void AnswerQuestion()
+        {
+
+        }
+
+        /// <summary>
+        /// Creates a results object connected to the user and
+        /// submits the object to resultsData model
+        /// </summary>
+        /// <returns></returns>
+        private async Task CompleteQuiz()
+        {
+            // Create Results object to add to users resultsData list
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            ResultsData resultsData = new ResultsData();
+            resultsData.ApplicationUserId = user.Id;
+            resultsData.ApplicationUser = user;
+            resultsData.TotalAnswered = QuestionsAnswered;
+            resultsData.TotalAnsweredCorrect = QuestionsAnsweredCorrect;
+            resultsData.DateTaken = DateTime.Today;
+            _context.ResultsData.Add(resultsData);
+
+            // Save db changes
+            await _context.SaveChangesAsync();
         }
 
 

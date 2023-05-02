@@ -11,7 +11,7 @@ using spanish_verbs.Data;
 namespace spanish_verbs.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230428193704_InitialCreate")]
+    [Migration("20230501152018_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

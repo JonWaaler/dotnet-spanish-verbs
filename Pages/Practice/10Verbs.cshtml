@@ -5,11 +5,15 @@
     Layout = "~/PAges/Shared/_QuizLayout.cshtml";
     Random r = new Random();
     int num = r.Next(0, 2);
+
 }
 
 <section style="height: 100vh">
 
     @*Quiz Progress bar*@
+    @if (Model.QuestionsAnswered >= 0 && Model.QuestionsAnswered < Model.QuestionWords.Count)
+    {
+        
     <div class="flex-container justify-content-between align-items-center quiz-head">
         <a class="quiz-exit" asp-area="" asp-page="/Practice/index">
             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -20,37 +24,72 @@
             </div>
         </div>
     </div>
-
+    }
     <div>
         <div>
             <form method="post" >
                 <div>
                     <div>
-                    @if (Model.QuestionsAnswered < 10) {
-                        @*Quiz*@
-                        <div class="">
-                            @if (Model.QuestionWords != null)
+                        @if (Model.QuestionsAnswered < 10) {
+                            @*Quiz*@
+                            <div class="text-center w-auto">
+                                @if (Model.QuestionWords != null)
+                                {
+                                    <h2 class="display-1 m-5 text-center">
+                                        @if (num == 0)
+                                        {
+                                            @Model.QuestionWords[Model.QuestionsAnswered].ToEnglish
+                                        }
+                                        else
+                                        {
+                                            @Model.QuestionWords[Model.QuestionsAnswered].ToSpanish
+                                        }
+                                    </h2>
+                                }
+                                else
+                                {
+                                    <h5>Error loading Quiz</h5>
+                                }
+                            </div>
+                        
+                        @* ANSWER*@
+                            if(!Model.QuestionChecked)
                             {
-                                <h2 class="display-1 m-5 text-center">
-                                    @if (num == 0)
+                                <input asp-for="Answer" autofocus class="form-control m-5 mx-auto" placeholder="Answer..." value="" />
+                            }
+                        }
+                        @* Check Answer *@
+                        <div class="show-answer">
+                            @if (Model.QuestionsAnswered < 10)
+                            {
+                                if (Model.QuestionChecked)
+                                {
+                                    
+                                    if (Model.IsCorrect)
                                     {
-                                        @Model.QuestionWords[Model.QuestionsAnswered].ToEnglish
+                                        <p class="alert alert-success container w-50">
+                                        Correct!
+                                        </p>
                                     }
                                     else
                                     {
-                                        @Model.QuestionWords[Model.QuestionsAnswered].ToSpanish
+                                        <p class="alert alert-danger container w-50">
+                                            Answer:
+                                            @if (num == 1)
+                                            {
+                                                @Model.QuestionWords[Model.QuestionsAnswered].ToEnglish
+                                            }
+                                            else
+                                            {
+                                                @Model.QuestionWords[Model.QuestionsAnswered].ToSpanish
+                                            }
+                                        </p>
+                                    
                                     }
-                                </h2>
-                            }
-                            else
-                            {
-                                <h5>Error loading Quiz</h5>
+                                }
+                                
                             }
                         </div>
-                        
-                        @* ANSWER*@
-                        <input asp-for="Answer" autofocus class="form-control m-5 mx-auto" placeholder="Type your answer here" value="@Model.QuestionWords[Model.QuestionsAnswered].ToSpanish.ToString()" />
-                    }
 
                     @*QUIZ INFORMATION*@
                     @if (Model.QuestionsAnswered >= 10)
@@ -75,9 +114,9 @@
                         </div>
                     }
                     
+                    </div>
+                </div>
 
-                </div>
-                </div>
                 @*Submit Quiz Answer*@
                 @if (Model.QuestionsAnswered >= 10)
                 {
@@ -101,9 +140,7 @@
                     <div class="flex-container justify-content-center m-4" style="position: fixed; bottom: 0; left: 0; right: 0;">
                         <form method="post" asp-page-handler="Results" >
                             <input type="hidden" asp-for="Answer" class="form-control" value="Complete" />
-                            <button type="submit" value="Submit" class="btn btn-lg btn-primary m-1">
-                                New Quiz
-                            </button>
+                            <a class="btn btn-lg btn-primary m-1" asp-page-handler="NewQuiz"/>
                             <a class="btn btn-lg btn-primary m-1" asp-area="" asp-page="/Practice/index">
                                 Practice
                             </a>
@@ -112,46 +149,26 @@
                 }
                 else
                 {
+                    if (!Model.QuestionChecked)
+                    {
+                        
+                    <div class="btn-quiz-next flex-container justify-content-center">
+                        <button type="submit" value="Submit" class="btn btn-primary btn-lg w-100 m-2" style="height: 50px; max-width: 500px">
+                            <i class="fas fa-chevron-right">Check</i>
+                        </button>
+                        </div>
+                    }
+                    else
+                    {
+                        
                     <div class="btn-quiz-next flex-container justify-content-center">
                         <button type="submit" value="Submit" class="btn btn-primary btn-lg w-100 m-2" style="height: 50px; max-width: 500px">
                             <i class="fas fa-chevron-right">Continue</i>
                         </button>
                     </div>
+                    }
                 }
             </form>
         </div>
     </div>
-    @*
-    <code class="debug-section d-none">
-        <h3 class="p-2 text-center border-top">Cheat Sheet</h3>
-        <div class="overflow-hidden flex-container justify-content-center" style="flex-direction: row; flex-wrap: wrap;">
-            @for (int i = 0; i < Model.QuestionWords.Count; i++)
-            {
-                var word = Model.QuestionWords[i];
-
-                <div class="m-1" >
-                    <div class="card" style="width: 150px">
-                        @if(Model.QuestionsAnswered == i)
-                        {
-                            <div class="card-body bg-success bg-opacity-25">
-                                <p>@(i+1).</p>
-                                <h5 class="card-title text-dark text-capitalize">@word.ToEnglish</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">@word.ToSpanish</h6>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="card-body">
-                                <p>@(i+1).</p>
-                                <h5 class="card-title text-dark text-capitalize">@word.ToEnglish</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">@word.ToSpanish</h6>
-                            </div>
-                        }
-
-                    </div>
-                </div>
-            }
-        </div>
-    </code>
-    *@
 </section>
