@@ -61,6 +61,7 @@ namespace spanish_verbs.Pages.Practice
         {
             Console.WriteLine($"10Verbs - ON GET");
 
+            
             QuestionChecked = HttpContext.Session.GetInt32("10VerbsQuestionChecked") == 1;
             IsCorrect = HttpContext.Session.GetInt32("10VerbsIsCorrect") == 1;
 
@@ -90,9 +91,6 @@ namespace spanish_verbs.Pages.Practice
 
             GetData(session);
 
-
-
-
             QuestionChecked = session.GetInt32("10VerbsQuestionChecked") == 1;
             IsCorrect = session.GetInt32("10VerbsIsCorrect") == 1;
 
@@ -106,7 +104,6 @@ namespace spanish_verbs.Pages.Practice
 
                 // Update the session data
                 session.SetInt32("10VerbsQuestionsAnswered", QuestionsAnswered);
-                session.SetInt32("10VerbsQuestionsAnsweredCorrect", QuestionsAnsweredCorrect);
                 session.SetInt32("10VerbsQuestionChecked", 0);
                 session.SetInt32("10VerbsIsCorrect", 0);
 
@@ -142,6 +139,8 @@ namespace spanish_verbs.Pages.Practice
 
                     session.SetInt32("10VerbsQuestionChecked", QuestionChecked == true ? 1: 0);
                     session.SetInt32("10VerbsIsCorrect", IsCorrect == true ? 1: 0);
+                    session.SetInt32("10VerbsQuestionsAnsweredCorrect", QuestionsAnsweredCorrect);
+
                     Console.WriteLine("Saved QuestionChecked Results");
                 }
             }
@@ -168,7 +167,8 @@ namespace spanish_verbs.Pages.Practice
 
             // Get the list of words the user was using
             if (verbs == null || questionsAnswered == null || questionsAnsweredCorrect == null)
-                throw new Exception($"10Verbs session returned null, On answer submission.");
+                return;
+                //throw new Exception($"10Verbs session returned null, On answer submission.");
 
             // Allows Razor pages to access this information
             QuestionWords = JsonConvert.DeserializeObject<List<Word>>(verbs);
