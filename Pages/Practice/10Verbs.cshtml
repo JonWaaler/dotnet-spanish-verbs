@@ -140,7 +140,9 @@
                     <div class="flex-container justify-content-center m-4" style="position: fixed; bottom: 0; left: 0; right: 0;">
                         <form method="post" asp-page-handler="Results" >
                             <input type="hidden" asp-for="Answer" class="form-control" value="Complete" />
-                            <a class="btn btn-lg btn-primary m-1" asp-page-handler="NewQuiz"/>
+                            <a class="btn btn-lg btn-primary m-1" asp-page-handler="NewQuiz">
+                                New Quiz
+                            </a>
                             <a class="btn btn-lg btn-primary m-1" asp-area="" asp-page="/Practice/index">
                                 Practice
                             </a>
