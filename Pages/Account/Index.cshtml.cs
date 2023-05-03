@@ -40,6 +40,9 @@ namespace spanish_verbs.Pages.Account
 
             Results = resultsData;
 
+            //await Utils.GetActiveStreak(_context, _userManager, HttpContext);
+
+
             return Page();
         }
     }

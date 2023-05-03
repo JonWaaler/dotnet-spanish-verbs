@@ -34,6 +34,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<ResultsData> ResultsData { get; set; } = default!;
     public DbSet<Word> Words { get; set; } = default!;
 
+    //private static ResultsData[] fake_entries = new ResultsData[]
+    //{
+    //    new ResultsData { }
+    //};
+
     /// <summary>
     /// 100 Infinitive verbs
     /// </summary>

@@ -23,6 +23,8 @@ namespace spanish_verbs.Pages.Practice
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
 
+
+
         public _10VerbsModel(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
@@ -34,7 +36,9 @@ namespace spanish_verbs.Pages.Practice
         /// used in quizes where the razor page with cycle between the words to conduct a test
         /// </summary>
         public IList<Word> QuestionWords { get; set; } = default!;
-
+        
+        // A variable used to track what language the question is asked in
+        public List<bool> IsQuestionEnglish = new();
 
         /// <summary>
         /// The answer received when the user submits their string
@@ -121,6 +125,16 @@ namespace spanish_verbs.Pages.Practice
                 if (!ModelState.IsValid || _context.Words == null)
                     Answer = "";
 
+                Console.WriteLine($"AnswerBefore: '{Answer}'");
+                
+                // Process String
+                Answer.TrimStart(' ');
+                Answer.TrimEnd(' ');
+
+                Console.WriteLine($"AnswerAfter: '{Answer}'");
+
+
+
                 // Validate answer
                 // Compare the users answer to both translations (temp)
                 if (QuestionWords != null && QuestionsAnswered >= 0 && QuestionsAnswered < QuestionWords.Count)
@@ -164,6 +178,7 @@ namespace spanish_verbs.Pages.Practice
             var verbs = session.GetString("10Verbs");
             var questionsAnswered = session.GetInt32("10VerbsQuestionsAnswered");
             var questionsAnsweredCorrect = session.GetInt32("10VerbsQuestionsAnsweredCorrect");
+            var isQuestionEnglish = session.GetString("10VerbsIsQuestionEnglish");
 
             // Get the list of words the user was using
             if (verbs == null || questionsAnswered == null || questionsAnsweredCorrect == null)
@@ -172,18 +187,9 @@ namespace spanish_verbs.Pages.Practice
 
             // Allows Razor pages to access this information
             QuestionWords = JsonConvert.DeserializeObject<List<Word>>(verbs);
+            IsQuestionEnglish = JsonConvert.DeserializeObject<List<bool>>(isQuestionEnglish);
             QuestionsAnswered = (int)questionsAnswered;
             QuestionsAnsweredCorrect = (int)questionsAnsweredCorrect;
-        }
-
-        private async void NextQuestion()
-        {
-
-        }
-
-        private async void AnswerQuestion()
-        {
-
         }
 
         /// <summary>
@@ -209,7 +215,7 @@ namespace spanish_verbs.Pages.Practice
 
 
         /// <summary>
-        /// Starts the quiz session
+        /// Starts the quiz session OR Continues the users quiz session
         /// Quiz data
         /// - QuestionsAnswered
         /// - QuestionsAnsweredCorrect
@@ -236,14 +242,18 @@ namespace spanish_verbs.Pages.Practice
                     var verbs = session.GetString("10Verbs");
                     var questionsAnswered = session.GetInt32("10VerbsQuestionsAnswered");
                     var questionsAnsweredCorrect = session.GetInt32("10VerbsQuestionsAnsweredCorrect");
+                    var isQuestionEnglish = session.GetString("10VerbsIsQuestionEnglish");
 
                     // Get the list of words the user was using
-                    if (verbs == null || questionsAnswered == null || questionsAnsweredCorrect == null)
+                    if (verbs == null || questionsAnswered == null || questionsAnsweredCorrect == null || isQuestionEnglish == null)
                         throw new Exception($"10Verbs session returned null even though a user session was found. id:{currentUserId}");
 
                     // Get Quiz info
                     if(verbs != null)
                         QuestionWords = JsonConvert.DeserializeObject<List<Word>>(verbs);
+                    if (isQuestionEnglish != null)
+                        IsQuestionEnglish = JsonConvert.DeserializeObject<List<bool>>(isQuestionEnglish);
+
                     QuestionsAnswered = (int)questionsAnswered;
                     QuestionsAnsweredCorrect = (int)questionsAnsweredCorrect;
 
@@ -280,8 +290,19 @@ namespace spanish_verbs.Pages.Practice
             // Get 10 random words
             List<Word> randomWords = await GetRandomWords(10);
 
+            // Randomize question language
+            Random r = new Random();
+            int rnum = 0;
+            for (int i = 0; i < randomWords.Count; i++)
+            {
+                rnum = r.Next(0, 2);
+
+                IsQuestionEnglish.Add(rnum == 0 ? false : true);
+            }
+
             // Store words in the new session
             session.SetString("10Verbs", JsonConvert.SerializeObject(randomWords));
+            session.SetString("10VerbsIsQuestionEnglish", JsonConvert.SerializeObject(IsQuestionEnglish));
             session.SetInt32("10VerbsQuestionsAnswered", 0);
             session.SetInt32("10VerbsQuestionsAnsweredCorrect", 0);
 

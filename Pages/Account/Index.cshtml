@@ -23,7 +23,7 @@
             </h4>
             @*Lightning*@
                 <div class="" style="">
-                    <a class="nav-link text-dark flex-container m-0 p-1 justify-content-start align-items-center" style="" asp-area="" asp-page="/Account/index" style="">
+                <a class="nav-link text-dark flex-container m-0 p-1 justify-content-start align-items-center" style="" asp-area="" asp-page="/Account/Activity" style="">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="38" height="38" viewBox="0 0 32 32" xml:space="preserve">
                             <rect x="0" y="0" width="100%" height="100%" fill="transparent"></rect>
                             <g transform="matrix(1 0 0 1 16 16)" id="9b89280f-36bc-46bb-808a-5aa344bf6e28">
@@ -39,6 +39,9 @@
                     </a>
                 </div>
             <p>Complete a test everyday to build a streak</p>
+            <a class="btn btn-primary" asp-area="" asp-page="/Account/Activity">
+                View Monthly Activity Calendar
+            </a>
 
             @if (testsCompleted > 0)
             {

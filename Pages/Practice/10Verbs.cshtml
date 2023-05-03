@@ -3,9 +3,6 @@
 @{
     ViewData["Title"] = "10Verbs";
     Layout = "~/PAges/Shared/_QuizLayout.cshtml";
-    Random r = new Random();
-    int num = r.Next(0, 2);
-
 }
 
 <section style="height: 100vh">
@@ -36,7 +33,7 @@
                                 @if (Model.QuestionWords != null)
                                 {
                                     <h2 class="display-1 m-5 text-center">
-                                        @if (num == 0)
+                                        @if (Model.IsQuestionEnglish[Model.QuestionsAnswered])
                                         {
                                             @Model.QuestionWords[Model.QuestionsAnswered].ToEnglish
                                         }
@@ -75,13 +72,13 @@
                                     {
                                         <p class="alert alert-danger container w-50">
                                             Answer:
-                                            @if (num == 1)
+                                            @if (Model.IsQuestionEnglish[Model.QuestionsAnswered])
                                             {
-                                                @Model.QuestionWords[Model.QuestionsAnswered].ToEnglish
+                                                @Model.QuestionWords[Model.QuestionsAnswered].ToSpanish
                                             }
                                             else
                                             {
-                                                @Model.QuestionWords[Model.QuestionsAnswered].ToSpanish
+                                                @Model.QuestionWords[Model.QuestionsAnswered].ToEnglish
                                             }
                                         </p>
                                     
