@@ -31,9 +31,11 @@ namespace spanish_verbs
             var user = await _userManager.GetUserAsync(_httpContext.User);
             if (user == null)
                 return;
+            
             var resultsData = await _context.ResultsData
                 .Where(e => e.ApplicationUserId == user.Id)
                 .ToListAsync();
+
 
             if(resultsData.Count <= 0)
             {
