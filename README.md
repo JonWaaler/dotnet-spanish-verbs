@@ -42,7 +42,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![portfolio-picture](https://i.imgur.com/kzlBFx1.png)
+![portfolio-picture](https://i.imgur.com/EBIjWhG.png)
 
 A website loading with the most 100 common spanish verbs, along side short quizes for repitition practice
 
